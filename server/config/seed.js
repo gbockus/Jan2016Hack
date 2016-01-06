@@ -4,11 +4,15 @@
  */
 
 'use strict';
-import Thing from '../api/thing/thing.model';
+import sqldb from '../sqldb';
+var Thing = sqldb.Thing;
 
-Thing.find({}).removeAsync()
+Thing.sync()
   .then(() => {
-    Thing.create({
+    return Thing.destroy({ where: {} });
+  })
+  .then(() => {
+    Thing.bulkCreate([{
       name: 'Development Tools',
       info: 'Integration with popular tools such as Bower, Grunt, Babel, Karma, ' +
              'Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, ' +
@@ -35,6 +39,6 @@ Thing.find({}).removeAsync()
       name: 'Deployment Ready',
       info: 'Easily deploy your app to Heroku or Openshift with the heroku ' +
              'and openshift subgenerators'
-    });
+    }]);
   });
 

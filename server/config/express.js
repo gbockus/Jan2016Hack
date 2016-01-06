@@ -16,9 +16,9 @@ import path from 'path';
 import lusca from 'lusca';
 import config from './environment';
 import session from 'express-session';
-import connectMongo from 'connect-mongo';
-import mongoose from 'mongoose';
-var mongoStore = connectMongo(session);
+import sqldb from '../sqldb';
+import expressSequelizeSession from 'express-sequelize-session';
+var Store = expressSequelizeSession(session.Store);
 
 export default function(app) {
   var env = app.get('env');
@@ -39,10 +39,7 @@ export default function(app) {
     secret: config.secrets.session,
     saveUninitialized: true,
     resave: false,
-    store: new mongoStore({
-      mongooseConnection: mongoose.connection,
-      db: 'junk1'
-    })
+    store: new Store(sqldb.sequelize)
   }));
 
   /**

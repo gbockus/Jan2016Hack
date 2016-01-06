@@ -70,10 +70,6 @@ var config = {
     );
 
     var serverConfig = config.params.serverConfig;
-
-    // Setup mongo for tests
-    var mongoose = require('mongoose');
-    mongoose.connect(serverConfig.mongo.uri, serverConfig.mongo.options); // Connect to database
   }
 };
 
