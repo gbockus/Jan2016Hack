@@ -26,6 +26,10 @@ angular.module('junk1App')
         }
       });
     },
+    getProcesses: function () {
+      var url = 'api/process';
+      return $http.get(url);
+    },
     serviceData: function(){
       return $q.when();
     }

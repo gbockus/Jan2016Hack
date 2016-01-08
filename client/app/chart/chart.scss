@@ -41,3 +41,17 @@ text {
   font: 10px sans-serif;
   pointer-events: none;
 }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 150px;
+  height: 80px;
+  padding: 10px;
+  color: white;
+  font: 12px sans-serif;
+  background: black;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}

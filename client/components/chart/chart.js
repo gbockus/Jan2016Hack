@@ -5,35 +5,21 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
 
     var link = function ($scope, $el, $attrs) {
       var links = [
-        {source: "Service-1", target: "Service-2", type: "licensing", color: 1},
-        {source: "Service-1", target: "Service-3", type: "licensing", color: 2},
-        {source: "Service-4", target: "Service-5", type: "suit", color: 3},
-        {source: "Service-6", target: "Service-5", type: "suit", color: 3},
-        {source: "Service-7", target: "Service-5", type: "resolved", color: 3},
-        {source: "Service-3", target: "Service-5", type: "suit", color: 3},
-        {source: "Service-8", target: "Service-5", type: "suit", color: 3},
-        {source: "Service-1", target: "Service-9", type: "suit", color: 4},
-        {source: "Service-1", target: "Service-10", type: "suit", color: 5},
-        {source: "Service-11", target: "Service-12", type: "suit", color: 6},
-        {source: "Service-5", target: "Service-3", type: "suit", color: 2},
-        {source: "Service-1", target: "Inventec", type: "suit", color: 7},
-        {source: "Service-4", target: "Service-8", type: "resolved", color: 8},
-        {source: "Service-13", target: "Service-8", type: "resolved", color: 8},
-        {source: "Service-14", target: "Service-8", type: "suit", color: 8},
-        {source: "Service-15", target: "Service-13", type: "suit", color: 9},
-        {source: "Service-8", target: "Service-13", type: "resolved", color: 9},
-        {source: "Service-5", target: "Service-7", type: "resolved", color: 10},
-        {source: "Service-16", target: "Service-7", type: "resolved", color: 10},
-        {source: "Service-5", target: "Service-6", type: "suit", color: 11},
-        {source: "Service-1", target: "Service-6", type: "suit", color: 11},
-        {source: "Service-6", target: "Service-1", type: "suit", color: 12},
-        {source: "Service-19", target: "Service-18", type: "suit", color: 13},
-        {source: "Service-17", target: "Service-18", type: "suit", color: 13},
-        {source: "Service-8", target: "Service-4", type: "resolved", color: 14},
-        {source: "Service-5", target: "Service-4", type: "suit", color: 14},
-        {source: "Service-8", target: "Service-14", type: "suit", color: 15},
-        {source: "Service-7", target: "Service-16", type: "suit", color: 16}
+        {source: "activity", target: "webapi"},
+        {source: "activity", target: "proxy"},
+        {source: "identity", target: "restore"},
+        {source: "tenant", target: "restore"},
+        {source: "proxy", target: "restore"},
+        {source: "restore", target: "proxy"},
+        {source: "restore", target: "tenant"},
+        {source: "activity", target: "tenant"},
+        {source: "tenant", target: "activity"},
+        {source: "webapi", target: "activity"},
+        {source: "restore", target: "identity"},
+        {source: "webapi", target: "identity"}
       ];
+
+      console.log('inside the directive, processes are ', $scope.processes);
 
       function line_colors(n) {
         var line_colors= ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
@@ -42,25 +28,12 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
 
       function get_color(n) {
         var colorMap = {
-          "Service-1": 0,
-          "Service-2": 1,
-          "Service-3": 2,
-          "Service-4": 3,
-          "Service-5": 4,
-          "Service-6": 5,
-          "Service-7": 6,
-          "Service-8": 7,
-          "Service-9": 8,
-          "Service-10": 9,
-          "Service-11": 10,
-          "Service-12": 11,
-          "Service-13": 12,
-          "Service-14": 13,
-          "Service-15": 14,
-          "Service-16": 15,
-          "Service-17": 16,
-          "Service-18": 17,
-          "Service-19": 18
+          "activity": 0,
+          "webapi": 1,
+          "proxy": 2,
+          "identity": 3,
+          "restore": 4,
+          "tenant": 5
         };
         console.log('get the color yo!');
         if (n && n.name){
@@ -78,7 +51,7 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
         link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
       });
 
-      var width = 960,
+      var width = 560,
         height = 500;
 
       var force = d3.layout.force()
@@ -95,6 +68,8 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
       var svg = d3.select($el[0]).append("svg")
         .attr("width", width)
         .attr("height", height);
+
+
 
       // build the arrow.
       svg.append("svg:defs").selectAll("marker")
@@ -135,18 +110,28 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
         .on("click", function(d){
           chartService.serviceData(d.name)
             .then(function(){
+              console.log('click d is', d);
               $scope.boom = d;
             });
         })
         .call(force.drag);
 
       node.append("circle")
-        .attr("r", 12);
+        .attr("r", 12)
+        .attr("title", function(v) { return 'boom bomo pow' });
 
       node.append("text")
         .attr("x", 12)
         .attr("dy", ".35em")
-        .text(function(d) { return d.name; });
+        .text(function(d) {
+          var port ='';
+          $scope.processes.forEach(function(val){
+            if(val.name === d.name) {
+              port = val.info;
+            }
+          })
+          return d.name +':' + port;
+        });
 
       function tick() {
         link
@@ -159,22 +144,52 @@ angular.module('junk1App').directive('graphChart', ['$window','chartService',
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
       }
 
-      function mouseover() {
+       //tooltips and stuff
+      // Define the div for the tooltip
+      var div = d3.select($el[0]).append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+      function mouseover(d) {
+        var port = '';
+        var name = '';
+        var status = '';
+        var pid = '';
+        $scope.processes.forEach(function(val){
+          if(val.name === d.name) {
+            port = val.info;
+            name = val.name;
+            status = val.status || 'inactive';
+            pid = val._id;
+          }
+        })
         d3.select(this).select("circle").transition()
           .duration(750)
           .attr("r", 16);
+        div.transition()
+          .duration(200)
+          .style("opacity", .9);
+        div	.html("name: " + name + "</br>" + "port: " + port + "<br/>" + "status: " + status + "</br>" + "_id: " + pid)
+          .style("left", (d3.event.pageX  - 80) + "px")
+          .style("top", (d3.event.pageY - 100) + "px");
+
       }
 
       function mouseout() {
         d3.select(this).select("circle").transition()
           .duration(750)
           .attr("r", 12);
+
+        div.transition()
+          .duration(500)
+          .style("opacity", 0);
       }
     };
     return {
       template: '<div class="chart col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>',
       replace: true,
       link: link,
+      scope: {processes: '=', boom: '='},
       restrict: 'E'
     };
   }]);
@@ -192,25 +207,12 @@ angular.module('junk1App').directive('serviceChart', ['$window',
 
       function get_color(n) {
         var colorMap = {
-          "Service-1": 0,
-          "Service-2": 1,
-          "Service-3": 2,
-          "Service-4": 3,
-          "Service-5": 4,
-          "Service-6": 5,
-          "Service-7": 6,
-          "Service-8": 7,
-          "Service-9": 8,
-          "Service-10": 9,
-          "Service-11": 10,
-          "Service-12": 11,
-          "Service-13": 12,
-          "Service-14": 13,
-          "Service-15": 14,
-          "Service-16": 15,
-          "Service-17": 16,
-          "Service-18": 17,
-          "Service-19": 18
+          "activity": 0,
+          "webapi": 1,
+          "proxy": 2,
+          "identity": 3,
+          "restore": 4,
+          "tenant": 5
         };
         console.log('get the color yo!');
         if (n && n.name){
@@ -283,11 +285,25 @@ angular.module('junk1App').directive('serviceChart', ['$window',
           .attr("font-family", "sans-serif")
           .attr("font-size", "11px")
           .attr("fill", "white");
+
+        svg.append("text")
+          .attr("x", (width / 2))
+          .attr("y", 0)
+          .attr("text-anchor", "middle")
+          .style("font-size", "16px")
+          .style("text-decoration", "underline")
+          .text(function(){
+            var title = '';
+            $scope.processes.forEach(function(val){
+              if (val.name === $scope.boom.name) {
+                title = val.name + ":" + val.info;
+              }
+            })
+            return title;
+          });
       };
 
       var update = function() {
-        console.log("here");
-        console.log('stuff has been updated', $scope.boom);
 
         var baseset = [ 18, 14, 10, 9, 11, 25, 12 , 19, 12, 13,
           15, 10, 17, 20, 21, 16, 36, 8, 23, 28];
@@ -306,7 +322,7 @@ angular.module('junk1App').directive('serviceChart', ['$window',
         15, 10, 5, 20, 18, 13, 36, 8, 3, 28];
 
       var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 960 - margin.left - margin.right,
+        width = 560 - margin.left - margin.right,
         barPadding = 1,
         height = 500 - margin.top - margin.bottom;
 
@@ -344,11 +360,11 @@ angular.module('junk1App').directive('serviceChart', ['$window',
       $scope.$watch('boom', update);
     };
     return {
-      template: '<div class="chart col-sm-12 col-md-12 col-lg-12 col-xl-12"></div>',
+      template: '<div></div>',
       replace: true,
       restrict: 'E',
       link: link,
-      scope: {boom: '='}
+      scope: {boom: '=', processes: '='}
 
     };
   }]);

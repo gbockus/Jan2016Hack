@@ -4,7 +4,7 @@
 
 class ChartController {
 
-  constructor($http, $scope, socket, $window, chartService) {
+  constructor($http, $scope, socket, $window, chartService, processes) {
     this.$http = $http;
     this.awesomeThings = [];
 
@@ -13,7 +13,7 @@ class ChartController {
       socket.syncUpdates('thing', this.awesomeThings);
     });
 
-    $scope.$on('$destroy', function() {
+   $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
     });
 
@@ -22,23 +22,25 @@ class ChartController {
     $scope.currtag = '';
     $scope.artists = [];
     $scope.boom = [];
+  $scope.processes = processes.data;
+  console.log('processes is ', processes.data);
 
     $window.addEventListener('resize', function () {
       $scope.$broadcast('windowResize');
     });
 
-    chartService.topTags()
-      .success(function (res) {
-        if (res.error) {
-          throw new Error(res.message);
-        } else {
-          $scope.toptags = res.tags.tag.map(function (t) {
-            t.reach    = +t.reach;
-            t.taggings = +t.taggings;
-            return t;
-          });
-        }
-      });
+    //chartService.topTags()
+    //  .success(function (res) {
+    //    if (res.error) {
+    //      throw new Error(res.message);
+    //    } else {
+    //      $scope.toptags = res.tags.tag.map(function (t) {
+    //        t.reach    = +t.reach;
+    //        t.taggings = +t.taggings;
+    //        return t;
+    //      });
+    //    }
+    //  });
   }
 
   addThing() {
