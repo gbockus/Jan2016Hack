@@ -1,6 +1,6 @@
 'use strict';
 
-export default function(sequelize, DataTypes) {
+exports['default'] =  function(sequelize, DataTypes) {
   return sequelize.define('Process', {
     _id: {
       type: DataTypes.INTEGER,
@@ -12,4 +12,5 @@ export default function(sequelize, DataTypes) {
     info: DataTypes.STRING,
     active: DataTypes.BOOLEAN
   });
-}
+};
+module.exports = exports['default'];

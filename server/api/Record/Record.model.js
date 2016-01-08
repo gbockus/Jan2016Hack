@@ -2,7 +2,7 @@
 
 
 exports['default'] = function(sequelize, DataTypes) {
-  return sequelize.define('Thing', {
+  return sequelize.define('Record', {
     _id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -29,4 +29,3 @@ module.exports = exports['default'];
 //    active: DataTypes.BOOLEAN
 //  });
 //}
-

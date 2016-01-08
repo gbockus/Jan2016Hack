@@ -6,7 +6,8 @@
 'use strict';
 import sqldb from '../sqldb';
 var Thing = sqldb.Thing,
-  Process = sqldb.Process;
+  Process = sqldb.Process,
+  Record = sqldb.Record;
 
 Thing.sync()
   .then(() => {
@@ -17,7 +18,12 @@ Thing.sync()
   })
   .then(() => {
     return Process.destroy({ where: {} });
-
+  })
+  .then(() => {
+    return Record.sync();
+  })
+  .then(() => {
+    return Record.destroy({ where: {} });
   })
   .then(() => {
     return Thing.bulkCreate([{

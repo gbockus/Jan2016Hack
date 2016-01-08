@@ -33,10 +33,14 @@ require('./routes')(app);
 
 // Start server
 function startServer() {
-  server.listen(config.port, config.ip, function() {
+  server.listen(config.port, config.ip);
+}
+
+sqldb.sequelize.sync()
+  .then(function() {
     let portsFile = configModule.has('ports');
 
-    let ports = configModule.get('ports')
+    let ports = configModule.get('ports');
 
 
     exec('lsof -i -n -P | grep TCP | grep LISTEN', function (error, stdout, stderr) {
@@ -64,13 +68,7 @@ function startServer() {
         console.log('exec error: ' + error);
       }
     });
-
-
-
-  });
-}
-
-sqldb.sequelize.sync()
+  })
   .then(startServer)
   .catch(function(err) {
     console.log('Server failed to start due to error: %s', err);
