@@ -14,6 +14,7 @@ var db = {
 };
 
 // Insert models below
+db.Process = db.sequelize.import('../api/Process/Process.model');
 db.Thing = db.sequelize.import('../api/thing/thing.model');
 
 export default db;
