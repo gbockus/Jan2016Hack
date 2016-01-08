@@ -34,7 +34,7 @@ describe('Process API Router:', function() {
     ProcessIndex.should.equal(routerStub);
   });
 
-  describe('GET /api/Porcesses', function() {
+  describe('GET /api/Process', function() {
 
     it('should route to Process.controller.index', function() {
       routerStub.get
@@ -44,7 +44,7 @@ describe('Process API Router:', function() {
 
   });
 
-  describe('GET /api/Porcesses/:id', function() {
+  describe('GET /api/Process/:id', function() {
 
     it('should route to Process.controller.show', function() {
       routerStub.get
@@ -54,7 +54,7 @@ describe('Process API Router:', function() {
 
   });
 
-  describe('POST /api/Porcesses', function() {
+  describe('POST /api/Process', function() {
 
     it('should route to Process.controller.create', function() {
       routerStub.post
@@ -64,7 +64,7 @@ describe('Process API Router:', function() {
 
   });
 
-  describe('PUT /api/Porcesses/:id', function() {
+  describe('PUT /api/Process/:id', function() {
 
     it('should route to Process.controller.update', function() {
       routerStub.put
@@ -74,7 +74,7 @@ describe('Process API Router:', function() {
 
   });
 
-  describe('PATCH /api/Porcesses/:id', function() {
+  describe('PATCH /api/Process/:id', function() {
 
     it('should route to Process.controller.update', function() {
       routerStub.patch
@@ -84,7 +84,7 @@ describe('Process API Router:', function() {
 
   });
 
-  describe('DELETE /api/Porcesses/:id', function() {
+  describe('DELETE /api/Process/:id', function() {
 
     it('should route to Process.controller.destroy', function() {
       routerStub.delete

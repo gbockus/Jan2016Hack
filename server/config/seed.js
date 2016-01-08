@@ -5,14 +5,22 @@
 
 'use strict';
 import sqldb from '../sqldb';
-var Thing = sqldb.Thing;
+var Thing = sqldb.Thing,
+  Process = sqldb.Process;
 
 Thing.sync()
   .then(() => {
     return Thing.destroy({ where: {} });
   })
   .then(() => {
-    Thing.bulkCreate([{
+  return Process.sync();
+  })
+  .then(() => {
+    return Process.destroy({ where: {} });
+
+  })
+  .then(() => {
+    return Thing.bulkCreate([{
       name: 'Development Tools',
       info: 'Integration with popular tools such as Bower, Grunt, Babel, Karma, ' +
              'Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, ' +

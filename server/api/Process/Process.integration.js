@@ -7,12 +7,12 @@ var newProcess;
 
 describe('Process API:', function() {
 
-  describe('GET /api/Porcesses', function() {
+  describe('GET /api/Process', function() {
     var Processs;
 
     beforeEach(function(done) {
       request(app)
-        .get('/api/Porcesses')
+        .get('/api/Process')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -30,10 +30,10 @@ describe('Process API:', function() {
 
   });
 
-  describe('POST /api/Porcesses', function() {
+  describe('POST /api/Process', function() {
     beforeEach(function(done) {
       request(app)
-        .post('/api/Porcesses')
+        .post('/api/Process')
         .send({
           name: 'New Process',
           info: 'This is the brand new Process!!!'
@@ -56,12 +56,12 @@ describe('Process API:', function() {
 
   });
 
-  describe('GET /api/Porcesses/:id', function() {
+  describe('GET /api/Process/:id', function() {
     var Process;
 
     beforeEach(function(done) {
       request(app)
-        .get('/api/Porcesses/' + newProcess._id)
+        .get('/api/Process/' + newProcess._id)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -84,12 +84,12 @@ describe('Process API:', function() {
 
   });
 
-  describe('PUT /api/Porcesses/:id', function() {
+  describe('PUT /api/Process/:id', function() {
     var updatedProcess;
 
     beforeEach(function(done) {
       request(app)
-        .put('/api/Porcesses/' + newProcess._id)
+        .put('/api/Process/' + newProcess._id)
         .send({
           name: 'Updated Process',
           info: 'This is the updated Process!!!'
@@ -116,11 +116,11 @@ describe('Process API:', function() {
 
   });
 
-  describe('DELETE /api/Porcesses/:id', function() {
+  describe('DELETE /api/Process/:id', function() {
 
     it('should respond with 204 on successful removal', function(done) {
       request(app)
-        .delete('/api/Porcesses/' + newProcess._id)
+        .delete('/api/Process/' + newProcess._id)
         .expect(204)
         .end((err, res) => {
           if (err) {
@@ -132,7 +132,7 @@ describe('Process API:', function() {
 
     it('should respond with 404 when Process does not exist', function(done) {
       request(app)
-        .delete('/api/Porcesses/' + newProcess._id)
+        .delete('/api/Process/' + newProcess._id)
         .expect(404)
         .end((err, res) => {
           if (err) {

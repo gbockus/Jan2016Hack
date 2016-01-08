@@ -11,10 +11,12 @@ class MainController {
     $http.get('/api/things').then(response => {
       this.awesomeThings = response.data;
       socket.syncUpdates('thing', this.awesomeThings);
+      socket.syncUpdates('process', this.processes);
     });
 
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
+      socket.unsyncUpdates('process');
     });
   }
 
@@ -27,6 +29,10 @@ class MainController {
 
   deleteThing(thing) {
     this.$http.delete('/api/things/' + thing._id);
+  }
+
+  deleteProcess(process) {
+    this.$http.delete('/api/process/' + process._id);
   }
 }
 

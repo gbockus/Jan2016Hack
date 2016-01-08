@@ -553,7 +553,8 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-          optional: ['runtime']
+          optional: ['runtime'],
+          ignore: ['configs']
         },
         files: [{
           expand: true,

@@ -1,0 +1,12 @@
+{
+  "processJSON": "/Users/bockug/github/stab/configs/default.json",
+  "ports": {
+    "activity": 3106,
+    "identity": 3102,
+    "proxy": 8000,
+    "restore": 3105,
+    "tenant": 3103,
+    "webapi": 3100
+  }
+
+}
