@@ -11,7 +11,11 @@ angular.module('junk1App')
         resolve: {
           processes : function(chartService) {
             return chartService.getProcesses();
+          },
+          records: function(chartService) {
+            return chartService.getRecords();
           }
+
         }
       });
   });

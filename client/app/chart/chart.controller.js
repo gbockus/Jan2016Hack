@@ -4,7 +4,7 @@
 
 class ChartController {
 
-  constructor($http, $scope, socket, $window, chartService, processes) {
+  constructor($http, $scope, socket, $window, chartService, processes, records) {
     this.$http = $http;
     this.awesomeThings = [];
 

@@ -30,6 +30,9 @@ angular.module('junk1App')
       var url = 'api/process';
       return $http.get(url);
     },
+    getRecords: function() {
+      return $http.get('api/record');
+    },
     serviceData: function(){
       return $q.when();
     }
